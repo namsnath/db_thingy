@@ -9,7 +9,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
-import '/core/view_models/directory_select_model.dart';
+import '/core/view_models/directory_select_view_model.dart';
 import '/core/router/app_specific/app_state.dart';
 import '/core/router/generic/models/page_action.dart';
 import '/core/router/generic/enums/page_state.dart';
@@ -194,8 +194,8 @@ class _DirectorySelector extends StatelessWidget with GetItMixin {
 /// A StatelessWidget to render the page to select a directory and database.
 ///
 /// Depends on the [DirectorySelectViewModel] for state.
-class DirectorySelectPage extends StatelessWidget with GetItMixin {
-  final log = Logger('DirectorySelectPage');
+class DirectorySelectView extends StatelessWidget with GetItMixin {
+  final log = Logger('DirectorySelectView');
   final _model = GetIt.instance<DirectorySelectViewModel>();
 
   /// A list of [Button]s for the databases found in the selected directory.

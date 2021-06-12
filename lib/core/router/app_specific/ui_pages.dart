@@ -27,7 +27,7 @@ class PageMapping {
     key: ValueKey('DirectorySelect'),
     path: '/',
     uiPage: UIPages.DirectorySelect,
-    uiWidget: DirectorySelectPage(),
+    uiWidget: DirectorySelectView(),
     currentPageAction: null,
   );
 
