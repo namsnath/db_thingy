@@ -22,6 +22,8 @@ class CustomRouteParser extends RouteInformationParser<PageConfiguration> {
         return PageMapping.SplashConfig;
       case PageMapping.DirectorySelectPath:
         return PageMapping.DirectorySelectConfig;
+      case PageMapping.DatabasePath:
+        return PageMapping.DatabaseConfig;
       case PageMapping.TablePath:
         return PageMapping.TableConfig;
       default:
@@ -37,6 +39,8 @@ class CustomRouteParser extends RouteInformationParser<PageConfiguration> {
       case UIPages.DirectorySelect:
         return const RouteInformation(
             location: PageMapping.DirectorySelectPath);
+      case UIPages.Database:
+        return const RouteInformation(location: PageMapping.DatabasePath);
       case UIPages.Table:
         return const RouteInformation(location: PageMapping.TablePath);
       default:

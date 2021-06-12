@@ -8,6 +8,7 @@ import '/ui/splash_page.dart';
 enum UIPages {
   Splash,
   DirectorySelect,
+  Database,
   Table,
 }
 
@@ -30,6 +31,15 @@ class PageMapping {
     currentPageAction: null,
   );
 
+  static const DatabasePath = '/database';
+  static final DatabaseConfig = PageConfiguration(
+    key: ValueKey('Database'),
+    path: '/database',
+    uiPage: UIPages.Database,
+    uiWidget: SamplePage(),
+    currentPageAction: null,
+  );
+
   static const TablePath = '/table';
   static final TableConfig = PageConfiguration(
     key: ValueKey('Table'),
@@ -45,6 +55,8 @@ class PageMapping {
         return SplashConfig;
       case UIPages.DirectorySelect:
         return DirectorySelectConfig;
+      case UIPages.Database:
+        return DatabaseConfig;
       case UIPages.Table:
         return TableConfig;
     }
