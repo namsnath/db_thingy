@@ -10,7 +10,7 @@ import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 
 import '/core/view_models/directory_select_view_model.dart';
-import '/core/router/app_specific/app_state.dart';
+import '/core/router/app_specific/app_router_state.dart';
 import '/core/router/generic/models/page_action.dart';
 import '/core/router/generic/enums/page_state.dart';
 import '/core/router/app_specific/ui_pages.dart';
@@ -279,7 +279,7 @@ class DirectorySelectView extends StatelessWidget with GetItMixin {
                 ...relationsList,
                 ElevatedButton(
                   onPressed: () async {
-                    GetIt.I<AppState>().currentAction = PageAction(
+                    GetIt.I<AppRouterState>().currentAction = PageAction(
                         state: PageState.addPage,
                         page: PageMapping.getConfig(UIPages.Table));
                   },

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '/core/router/app_specific/app_state.dart';
+import '/core/router/app_specific/app_router_state.dart';
 
 class SplashPage extends StatelessWidget {
   /// The Splash page that is displayed when the app starts.
@@ -19,7 +19,7 @@ class SplashPage extends StatelessWidget {
           // Ensures that the render finished
           Timer(
             Duration(milliseconds: 500),
-            () => GetIt.instance<AppState>().setSplashFinished(),
+            () => GetIt.instance<AppRouterState>().setSplashFinished(),
           );
         }
 

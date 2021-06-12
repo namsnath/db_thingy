@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-import '/core/router/app_specific/app_state.dart';
+import '/core/router/app_specific/app_router_state.dart';
 import '/core/router/app_specific/ui_pages.dart';
 import '/core/router/generic/models/page_action.dart';
 import '/core/router/generic/models/page_configuration.dart';
@@ -15,7 +15,7 @@ class CustomRouterDelegate extends RouterDelegate<PageConfiguration>
   @override
   final GlobalKey<NavigatorState> navigatorKey;
 
-  final AppState appState;
+  final AppRouterState appState;
   final List<Page> _pages = [];
 
   /// A [RouterDelegate] that handles the actual routing and page stack.

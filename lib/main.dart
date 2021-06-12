@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/material.dart';
 
-import 'core/router/app_specific/app_state.dart';
+import 'core/router/app_specific/app_router_state.dart';
 import 'core/router/generic/back_button_dispatcher.dart';
 import 'core/services/locator.dart';
 import 'core/router/generic/router_delegate.dart';
@@ -30,7 +30,7 @@ class DBThingyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = GetIt.instance<AppState>();
+    final appState = GetIt.instance<AppRouterState>();
     final delegate = CustomRouterDelegate(appState);
     final backButtonDispatcher = CustomBackButtonDispatcher(delegate);
 

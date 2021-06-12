@@ -9,8 +9,8 @@ import 'ui_pages.dart';
 ///
 /// This is used by [CustomRouterDelegate] in it's initialization and is listened to
 /// in order to track changes to the state and update the [Navigator] accordingly.
-class AppState extends ChangeNotifier {
-  final log = Logger('AppState');
+class AppRouterState extends ChangeNotifier {
+  final log = Logger('AppRouterState');
 
   bool _splashFinished = false;
   bool get splashFinished => _splashFinished;
