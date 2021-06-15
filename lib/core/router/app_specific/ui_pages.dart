@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '/core/router/generic/models/page_configuration.dart';
+import '/ui/database/database_view.dart';
 import '/ui/directory_select_page.dart';
 import '/ui/sample_page.dart';
 import '/ui/splash_page.dart';
@@ -36,7 +37,7 @@ class PageMapping {
     key: ValueKey('Database'),
     path: '/database',
     uiPage: UIPages.Database,
-    uiWidget: SamplePage(),
+    uiWidget: DatabaseView(),
     currentPageAction: null,
   );
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:db_thingy/core/services/database_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_breadcrumb/flutter_breadcrumb.dart';
@@ -191,72 +192,77 @@ class _DirectorySelector extends StatelessWidget with GetItMixin {
   }
 }
 
-/// A StatelessWidget to render the page to select a directory and database.
-///
-/// Depends on the [DirectorySelectViewModel] for state.
-class DirectorySelectView extends StatelessWidget with GetItMixin {
-  final log = Logger('DirectorySelectView');
-  final _model = GetIt.instance<DirectorySelectViewModel>();
+class _DatabaseButtons extends StatelessWidget with GetItMixin {
+  final log = Logger('_DatabaseButtons');
+  final _dbService = GetIt.I<DatabaseService>();
 
-  /// A list of [Button]s for the databases found in the selected directory.
-  List<Widget> get databases {
-    final directory =
-        watchOnly((DirectorySelectViewModel s) => s.selectedDirectory?.path ?? '');
+  final double _crossAxisSpacing = 8, _mainAxisSpacing = 12, _aspectRatio = 7;
+  final int _crossAxisCount = 2;
+
+  void _onDBSelectClick(String dbPath) async {
+    try {
+      var permissionGranted =
+          await Permission.manageExternalStorage.request().isGranted;
+
+      if (permissionGranted) {
+        await _dbService.selectDB(dbPath);
+        GetIt.I<AppRouterState>().currentAction = PageAction(
+          state: PageState.addPage,
+          page: PageMapping.getConfig(UIPages.Database),
+        );
+      }
+    } catch (e) {
+      log.severe(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final databases = watchOnly((DirectorySelectViewModel s) => s.dbList);
 
-    final buttons = databases
-        .map<ElevatedButton>(
-          (path) => ElevatedButton(
-            onPressed: () async {
-              try {
-                var status =
-                    await Permission.manageExternalStorage.request().isGranted;
-                log.info(status);
+    List<Widget> children = [];
 
-                _model.selectDB(path);
-              } catch (e) {
-                log.severe(e);
-              }
-            },
-            child: Text(path.replaceAll(directory + '/', '')),
-          ),
-        )
-        .toList();
-
-    if (buttons.length > 0) {
-      return [
+    if (databases.length > 0) {
+      children = [
         Text(
           'Databases',
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
-        ...buttons,
-        SizedBox(height: 20),
-        Text(
-          'Selected DB',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
+        const SizedBox(height: 20),
+        GridView.count(
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          crossAxisCount: _crossAxisCount,
+          crossAxisSpacing: _crossAxisSpacing,
+          mainAxisSpacing: _mainAxisSpacing,
+          childAspectRatio: _aspectRatio,
+          children: databases
+              .map(
+                (dbPath) => ElevatedButton(
+                  child: Text(path.basename(dbPath)),
+                  onPressed: () => _onDBSelectClick(dbPath),
+                ),
+              )
+              .toList(),
         ),
-        Text(_model.selectedDBPath),
       ];
     }
 
-    return [];
+    return Container(
+      child: Column(
+        children: children,
+      ),
+    );
   }
+}
 
-  List<Widget> get relationsList {
-    final relations = watchOnly((DirectorySelectViewModel s) => s.relations);
-
-    return relations
-            ?.map(
-              (e) => Text(
-                  '${e['fromTable']} (${e['from']}) ➜ ${e['table']} (${e['to']})'),
-            )
-            .toList() ??
-        [];
-  }
+/// A StatelessWidget to render the page to select a directory and database.
+///
+/// Depends on the [DirectorySelectViewModel] for state.
+class DirectorySelectView extends StatelessWidget with GetItMixin {
+  final log = Logger('DirectorySelectView');
 
   @override
   Widget build(BuildContext context) {
@@ -270,21 +276,11 @@ class DirectorySelectView extends StatelessWidget with GetItMixin {
         child: Center(
           child: SingleChildScrollView(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                _DatabaseButtons(),
+                Divider(thickness: 2),
                 _DirectorySelector(),
-                const SizedBox(height: 20),
-                ...databases,
-                const SizedBox(height: 20),
-                ...relationsList,
-                ElevatedButton(
-                  onPressed: () async {
-                    GetIt.I<AppRouterState>().currentAction = PageAction(
-                        state: PageState.addPage,
-                        page: PageMapping.getConfig(UIPages.Table));
-                  },
-                  child: Text('Open New Page'),
-                )
               ],
             ),
           ),

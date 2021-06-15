@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:indent/indent.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
-import 'package:sqflite/sqflite.dart';
 
 import '/core/services/shared_prefs_service.dart';
 
@@ -142,100 +140,5 @@ class DirectorySelectViewModel with ChangeNotifier {
 
     _dbList = filteredFilePaths;
     notifyListeners();
-  }
-
-  String _selectedDBPath = '';
-  String get selectedDBPath => _selectedDBPath;
-
-  Database? _selectedDB;
-  Database? get selectedDB => _selectedDB;
-
-  List<String> _tables = [];
-  List<String> get tables => _tables;
-
-  List<Map<String, dynamic>>? _relations;
-
-  /// A list of foreign key relations in the database.
-  List<Map<String, dynamic>>? get relations => _relations;
-
-  /// Queries SQLite to find Foriegn Key relations in the schema.
-  populateFKRelations() async {
-    final query = '''
-      SELECT
-          m.name as fromTable
-          , p.*
-      FROM
-          sqlite_master m
-          -- join on places where local and fk table don't match
-          -- If we need self-joins, need equality condition as well
-          JOIN pragma_foreign_key_list(m.name) p ON m.name != p."table"
-      WHERE m.type = 'table'
-      ORDER BY m.name;
-    '''
-        .unindent();
-
-    try {
-      final relations = await _selectedDB?.rawQuery(query) ?? [];
-      _relations = relations;
-
-      notifyListeners();
-    } catch (e) {
-      log.severe(e);
-    }
-  }
-
-  /// Queries `sqlite_master` to find the tables in the DB.
-  populateTablesList() async {
-    try {
-      final tableNamesQuery = await _selectedDB?.query(
-            'sqlite_master',
-            where: 'type = ?',
-            whereArgs: ['table'],
-          ) ??
-          [];
-
-      final tableNames = tableNamesQuery
-          .map((row) => row['name'] as String)
-          .toList(growable: false);
-
-      _tables = tableNames;
-
-      notifyListeners();
-    } catch (e) {
-      log.severe(e);
-    }
-  }
-
-  /// Updates the selected DB and path given a [path].
-  ///
-  /// Also calls other functions that populate tables and relations list.
-  selectDB(String path) async {
-    if (path == _selectedDBPath) {
-      return;
-    }
-
-    try {
-      final newDB = await openDatabase(path);
-
-      // If a DB object is present, close it.
-      if (_selectedDB != null) {
-        log.info('Closing DB ($_selectedDBPath)');
-        await _selectedDB!.close();
-
-        _tables = [];
-        _relations = [];
-      }
-
-      _selectedDBPath = path;
-      _selectedDB = newDB;
-
-      // Calling notifyListeners() here since populateFKRelations() could fail and is async.
-      notifyListeners();
-
-      populateTablesList();
-      populateFKRelations();
-    } catch (e) {
-      log.severe(e);
-    }
   }
 }
