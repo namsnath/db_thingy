@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '/core/router/generic/models/page_configuration.dart';
 import '/ui/database/database_view.dart';
 import '/ui/directory_select_page.dart';
-import '/ui/sample_page.dart';
 import '/ui/splash_page.dart';
+import '/ui/table/table_view.dart';
 
 enum UIPages {
   Splash,
@@ -46,7 +46,7 @@ class PageMapping {
     key: ValueKey('Table'),
     path: '/table',
     uiPage: UIPages.Table,
-    uiWidget: SamplePage(),
+    uiWidget: TableView(),
     currentPageAction: null,
   );
 

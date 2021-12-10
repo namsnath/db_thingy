@@ -22,12 +22,15 @@ class DatabaseService with ChangeNotifier {
 
   String _selectedTable = '';
   String get selectedTable => _selectedTable;
-  set selectedTable(String table) {
-    if (_tables.contains(table) && table != _selectedTable) {
-      _selectedTable = table;
-      notifyListeners();
-    }
-  }
+  // set selectedTable(String table) {
+  //   if (_tables.contains(table) && table != _selectedTable) {
+  //     _selectedTable = table;
+  //     notifyListeners();
+  //   }
+  // }
+
+  List<Map<String, dynamic>> _tableData = [];
+  List<Map<String, dynamic>> get tableData => _tableData;
 
   /// Queries SQLite to find Foriegn Key relations in the schema.
   populateFKRelations() async {
@@ -99,6 +102,7 @@ class DatabaseService with ChangeNotifier {
 
       _selectedDBPath = path;
       _selectedDB = newDB;
+      _selectedTable = '';
 
       // Calling notifyListeners() here since populateFKRelations() could fail and is async.
       notifyListeners();
@@ -107,6 +111,77 @@ class DatabaseService with ChangeNotifier {
       await populateFKRelations();
     } catch (e) {
       log.severe(e);
+    }
+  }
+
+  selectTable(String table) async {
+    if (table.isEmpty || !_tables.contains(table) || table == _selectedTable) {
+      return;
+    }
+
+    if (_selectedDB != null) {
+      try {
+        final _colMetadata = await _selectedDB!
+            .rawQuery('SELECT * FROM pragma_table_info("$table");');
+        final _cols = _colMetadata
+            .map((c) => '"$table"."${c['name']}" AS "${c['name']} ($table)"')
+            .toList()
+            .join(",");
+
+        final _joinedTables = relations
+            .where((e) => e['fromTable'] == table)
+            .map((e) => e['table']);
+
+        final _tableMetadataMapStream =
+            Stream.fromIterable(_joinedTables).asyncMap(
+          (t) async => MapEntry(
+            t,
+            await _selectedDB!
+                .rawQuery('SELECT * FROM pragma_table_info("$t");'),
+          ),
+        );
+
+        final _joinedColsSelectList = [];
+
+        await for (MapEntry entry in _tableMetadataMapStream) {
+          final joinedTable = entry.key;
+          final metadata = entry.value;
+          metadata.map((m) {
+            _joinedColsSelectList.add(
+                '"$joinedTable"."${m['name']}" AS "${m['name']} ($joinedTable)"');
+          }).toList();
+        }
+
+        final _joinedColsSelect = _joinedColsSelectList.length > 0
+            ? ', ' + _joinedColsSelectList.join(', ')
+            : '';
+
+        final joins = relations
+            .where((e) => e['fromTable'] == table)
+            .map((e) {
+              final toCol = e['to'] == 'id' ? 'rowid' : e['to'];
+              return '''
+                LEFT JOIN "${e['table']}" ON "$table"."${e['from']}" = "${e['table']}"."$toCol"
+              '''
+                  .unindent();
+            })
+            .toList()
+            .join(" ");
+
+        log.info(joins);
+
+        final _data = await _selectedDB!
+            .rawQuery('SELECT $_cols $_joinedColsSelect FROM "$table" $joins;');
+
+        _selectedTable = table;
+        _tableData = _data;
+        notifyListeners();
+      } catch (e) {
+        log.severe(e);
+        _selectedTable = table;
+        _tableData = [];
+        notifyListeners();
+      }
     }
   }
 }

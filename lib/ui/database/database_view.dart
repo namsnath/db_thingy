@@ -4,6 +4,10 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
+import '/core/router/app_specific/app_router_state.dart';
+import '/core/router/app_specific/ui_pages.dart';
+import '/core/router/generic/enums/page_state.dart';
+import '/core/router/generic/models/page_action.dart';
 import '/core/services/database_service.dart';
 
 class _TableButtons extends StatelessWidget with GetItMixin {
@@ -30,7 +34,11 @@ class _TableButtons extends StatelessWidget with GetItMixin {
               (table) => ElevatedButton(
                 child: Text(table),
                 onPressed: () async {
-                  _dbService.selectedTable = table;
+                  await _dbService.selectTable(table);
+                  GetIt.I<AppRouterState>().currentAction = PageAction(
+                    state: PageState.addPage,
+                    page: PageMapping.getConfig(UIPages.Table),
+                  );
                 },
               ),
             )
