@@ -36,7 +36,7 @@ class _TableButtons extends StatelessWidget with GetItMixin {
                 await _dbService.selectTable(table);
                 GetIt.I<AppRouterState>().currentAction = PageAction(
                   state: PageState.addPage,
-                  page: PageMapping.getConfig(UIPages.Table),
+                  page: PageMapping.getConfig(UIPages.table),
                 );
               },
             ),

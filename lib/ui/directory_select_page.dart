@@ -208,7 +208,7 @@ class _DatabaseButtons extends StatelessWidget with GetItMixin {
         await _dbService.selectDB(dbPath);
         GetIt.I<AppRouterState>().currentAction = PageAction(
           state: PageState.addPage,
-          page: PageMapping.getConfig(UIPages.Database),
+          page: PageMapping.getConfig(UIPages.database),
         );
       }
     } catch (e) {
