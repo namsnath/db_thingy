@@ -46,7 +46,7 @@ class _AppBarDirectorySelector extends StatelessWidget
     if (directory == null) {
       return [
         BreadCrumbItem(
-          content: Text('Please select a directory'),
+          content: const Text('Please select a directory'),
         ),
       ];
     }
@@ -62,7 +62,7 @@ class _AppBarDirectorySelector extends StatelessWidget
             return MapEntry(
               i,
               BreadCrumbItem(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 5.0,
                 ),
                 borderRadius: BorderRadius.circular(5.0),
@@ -90,7 +90,7 @@ class _AppBarDirectorySelector extends StatelessWidget
 
   BreadCrumb get _directoryBreadcrumb {
     return BreadCrumb(
-      divider: Icon(Icons.chevron_right),
+      divider: const Icon(Icons.chevron_right),
       overflow: ScrollableOverflow(
         direction: Axis.horizontal,
       ),
@@ -102,14 +102,14 @@ class _AppBarDirectorySelector extends StatelessWidget
   Container build(BuildContext context) {
     return Container(
       height: _preferredHeight,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _directoryBreadcrumb,
           IconButton(
             onPressed: _onFileSelectorClicked,
-            icon: Icon(Icons.folder_open_outlined),
+            icon: const Icon(Icons.folder_open_outlined),
           ),
         ],
       ),
@@ -117,7 +117,7 @@ class _AppBarDirectorySelector extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(_preferredHeight);
+  Size get preferredSize => const Size.fromHeight(_preferredHeight);
 }
 
 /// A Widget that renders the directory selector.
@@ -159,7 +159,7 @@ class _DirectorySelector extends StatelessWidget with GetItMixin {
       children = [
         GridView.count(
           shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           crossAxisCount: _crossAxisCount,
           crossAxisSpacing: _crossAxisSpacing,
           mainAxisSpacing: _mainAxisSpacing,
@@ -184,10 +184,8 @@ class _DirectorySelector extends StatelessWidget with GetItMixin {
       ];
     }
 
-    return Container(
-      child: Column(
-        children: children,
-      ),
+    return Column(
+      children: children,
     );
   }
 }
