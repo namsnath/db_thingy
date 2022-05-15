@@ -11,40 +11,40 @@ class CustomRouteParser extends RouteInformationParser<PageConfiguration> {
     final uri = Uri.parse(routeInformation.location ?? '/');
     // If no paths present, show Splash page
     if (uri.pathSegments.isEmpty) {
-      return PageMapping.SplashConfig;
+      return PageMapping.splashConfig;
     }
 
     // If paths present, get first path from Uri
     final path = uri.pathSegments[0];
     // Return PageConfiguration according to first path segment
     switch (path) {
-      case PageMapping.SplashPath:
-        return PageMapping.SplashConfig;
-      case PageMapping.DirectorySelectPath:
-        return PageMapping.DirectorySelectConfig;
-      case PageMapping.DatabasePath:
-        return PageMapping.DatabaseConfig;
-      case PageMapping.TablePath:
-        return PageMapping.TableConfig;
+      case PageMapping.splashPath:
+        return PageMapping.splashConfig;
+      case PageMapping.directorySelectPath:
+        return PageMapping.directorySelectConfig;
+      case PageMapping.databasePath:
+        return PageMapping.databaseConfig;
+      case PageMapping.tablePath:
+        return PageMapping.tableConfig;
       default:
-        return PageMapping.SplashConfig;
+        return PageMapping.splashConfig;
     }
   }
 
   @override
   RouteInformation restoreRouteInformation(PageConfiguration configuration) {
     switch (configuration.uiPage) {
-      case UIPages.Splash:
-        return const RouteInformation(location: PageMapping.SplashPath);
-      case UIPages.DirectorySelect:
+      case UIPages.splash:
+        return const RouteInformation(location: PageMapping.splashPath);
+      case UIPages.directorySelect:
         return const RouteInformation(
-            location: PageMapping.DirectorySelectPath);
-      case UIPages.Database:
-        return const RouteInformation(location: PageMapping.DatabasePath);
-      case UIPages.Table:
-        return const RouteInformation(location: PageMapping.TablePath);
+            location: PageMapping.directorySelectPath);
+      case UIPages.database:
+        return const RouteInformation(location: PageMapping.databasePath);
+      case UIPages.table:
+        return const RouteInformation(location: PageMapping.tablePath);
       default:
-        return const RouteInformation(location: PageMapping.SplashPath);
+        return const RouteInformation(location: PageMapping.splashPath);
     }
   }
 }

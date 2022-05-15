@@ -7,61 +7,61 @@ import '/ui/splash_page.dart';
 import '/ui/table/table_view.dart';
 
 enum UIPages {
-  Splash,
-  DirectorySelect,
-  Database,
-  Table,
+  splash,
+  directorySelect,
+  database,
+  table,
 }
 
 class PageMapping {
-  static const SplashPath = '/splash';
-  static final SplashConfig = PageConfiguration(
-    key: ValueKey('Splash'),
-    path: SplashPath,
-    uiPage: UIPages.Splash,
-    uiWidget: SplashPage(),
+  static const splashPath = '/splash';
+  static final splashConfig = PageConfiguration(
+    key: const ValueKey('splash'),
+    path: splashPath,
+    uiPage: UIPages.splash,
+    uiWidget: const SplashPage(),
     currentPageAction: null,
   );
 
-  static const DirectorySelectPath = '/';
-  static final DirectorySelectConfig = PageConfiguration(
-    key: ValueKey('DirectorySelect'),
+  static const directorySelectPath = '/';
+  static final directorySelectConfig = PageConfiguration(
+    key: const ValueKey('directorySelect'),
     path: '/',
-    uiPage: UIPages.DirectorySelect,
+    uiPage: UIPages.directorySelect,
     uiWidget: DirectorySelectView(),
     currentPageAction: null,
   );
 
-  static const DatabasePath = '/database';
-  static final DatabaseConfig = PageConfiguration(
-    key: ValueKey('Database'),
+  static const databasePath = '/database';
+  static final databaseConfig = PageConfiguration(
+    key: const ValueKey('database'),
     path: '/database',
-    uiPage: UIPages.Database,
+    uiPage: UIPages.database,
     uiWidget: DatabaseView(),
     currentPageAction: null,
   );
 
-  static const TablePath = '/table';
-  static final TableConfig = PageConfiguration(
-    key: ValueKey('Table'),
+  static const tablePath = '/table';
+  static final tableConfig = PageConfiguration(
+    key: const ValueKey('table'),
     path: '/table',
-    uiPage: UIPages.Table,
+    uiPage: UIPages.table,
     uiWidget: TableView(),
     currentPageAction: null,
   );
 
   static PageConfiguration getConfig(UIPages page) {
     switch (page) {
-      case UIPages.Splash:
-        return SplashConfig;
-      case UIPages.DirectorySelect:
-        return DirectorySelectConfig;
-      case UIPages.Database:
-        return DatabaseConfig;
-      case UIPages.Table:
-        return TableConfig;
+      case UIPages.splash:
+        return splashConfig;
+      case UIPages.directorySelect:
+        return directorySelectConfig;
+      case UIPages.database:
+        return databaseConfig;
+      case UIPages.table:
+        return tableConfig;
     }
   }
 
-  static PageConfiguration getDefaultPageConfig() => SplashConfig;
+  static PageConfiguration getDefaultPageConfig() => splashConfig;
 }

@@ -31,7 +31,7 @@ class AppRouterState extends ChangeNotifier {
     _splashFinished = true;
     _currentAction = PageAction(
       state: PageState.replaceAll,
-      page: PageMapping.getConfig(UIPages.DirectorySelect),
+      page: PageMapping.getConfig(UIPages.directorySelect),
     );
     notifyListeners();
   }
