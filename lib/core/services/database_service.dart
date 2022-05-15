@@ -152,7 +152,7 @@ class DatabaseService with ChangeNotifier {
           }).toList();
         }
 
-        final _joinedColsSelect = _joinedColsSelectList.length > 0
+        final _joinedColsSelect = _joinedColsSelectList.isNotEmpty
             ? ', ' + _joinedColsSelectList.join(', ')
             : '';
 

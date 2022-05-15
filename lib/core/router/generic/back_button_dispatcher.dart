@@ -9,6 +9,7 @@ class CustomBackButtonDispatcher extends RootBackButtonDispatcher {
 
   CustomBackButtonDispatcher(this._routerDelegate) : super();
 
+  @override
   Future<bool> didPopRoute() {
     return _routerDelegate.popRoute();
   }

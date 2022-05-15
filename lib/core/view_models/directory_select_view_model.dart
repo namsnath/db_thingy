@@ -16,7 +16,7 @@ class DirectorySelectViewModel with ChangeNotifier {
   ///
   /// Optionally, pass in a custom [prefsService].
   DirectorySelectViewModel({SharedPrefsService? prefsService}) {
-    this._prefsService = prefsService ?? GetIt.I.get<SharedPrefsService>();
+    _prefsService = prefsService ?? GetIt.I.get<SharedPrefsService>();
   }
 
   /// Initializes the class by fetching [selectedDirectory] from shared preferences.
