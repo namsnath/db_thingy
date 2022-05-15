@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -151,9 +150,9 @@ class CustomRouterDelegate extends RouterDelegate<PageConfiguration>
   /// Adds a list of pages from their `routes`.
   void addAll(List<PageConfiguration> routes) {
     _pages.clear();
-    routes.forEach((route) {
+    for (var route in routes) {
       addPage(route);
-    });
+    }
   }
 
   /// Clears the list of pages and adds a new page.
