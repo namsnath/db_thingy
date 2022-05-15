@@ -15,12 +15,12 @@ class _TableData extends StatelessWidget with GetItMixin {
     List<DataRow> rows = [];
     List<DataColumn> columns = [];
 
-    if (tableData.length > 0) {
+    if (tableData.isNotEmpty) {
       columns = tableData[0]
           .keys
           .map(
             (col) => DataColumn(
-              label: Text(col, style: TextStyle(fontWeight: FontWeight.bold)),
+              label: Text(col, style: const TextStyle(fontWeight: FontWeight.bold)),
             ),
           )
           .toList();
@@ -40,7 +40,7 @@ class _TableData extends StatelessWidget with GetItMixin {
           .toList();
       rows = dataRows;
     } else {
-      columns = [DataColumn(label: Text('No Data'))];
+      columns = [const DataColumn(label: Text('No Data'))];
     }
 
     return SingleChildScrollView(
@@ -67,7 +67,7 @@ class TableView extends StatelessWidget with GetItMixin {
         title: Text('$selectedTable (${path.basename(selectedDBPath)})'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         child: Center(
           child: Column(
             children: [

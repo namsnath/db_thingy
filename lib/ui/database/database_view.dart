@@ -21,29 +21,27 @@ class _TableButtons extends StatelessWidget with GetItMixin {
   Widget build(BuildContext context) {
     final tables = watchOnly((DatabaseService s) => s.tables);
 
-    return Container(
-      child: GridView.count(
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        crossAxisCount: _crossAxisCount,
-        crossAxisSpacing: _crossAxisSpacing,
-        mainAxisSpacing: _mainAxisSpacing,
-        childAspectRatio: _aspectRatio,
-        children: tables
-            .map(
-              (table) => ElevatedButton(
-                child: Text(table),
-                onPressed: () async {
-                  await _dbService.selectTable(table);
-                  GetIt.I<AppRouterState>().currentAction = PageAction(
-                    state: PageState.addPage,
-                    page: PageMapping.getConfig(UIPages.Table),
-                  );
-                },
-              ),
-            )
-            .toList(),
-      ),
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      crossAxisCount: _crossAxisCount,
+      crossAxisSpacing: _crossAxisSpacing,
+      mainAxisSpacing: _mainAxisSpacing,
+      childAspectRatio: _aspectRatio,
+      children: tables
+          .map(
+            (table) => ElevatedButton(
+              child: Text(table),
+              onPressed: () async {
+                await _dbService.selectTable(table);
+                GetIt.I<AppRouterState>().currentAction = PageAction(
+                  state: PageState.addPage,
+                  page: PageMapping.getConfig(UIPages.Table),
+                );
+              },
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -78,7 +76,7 @@ class DatabaseView extends StatelessWidget with GetItMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _TableButtons(),
-              Divider(),
+              const Divider(),
               ...relationsList,
               Text(selectedTable),
             ],

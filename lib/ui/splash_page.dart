@@ -18,7 +18,7 @@ class SplashPage extends StatelessWidget {
           // Add a small timer and trigger splash finished
           // Ensures that the render finished
           Timer(
-            Duration(milliseconds: 500),
+            const Duration(milliseconds: 500),
             () => GetIt.instance<AppRouterState>().setSplashFinished(),
           );
         }

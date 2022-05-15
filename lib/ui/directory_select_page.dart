@@ -222,9 +222,9 @@ class _DatabaseButtons extends StatelessWidget with GetItMixin {
 
     List<Widget> children = [];
 
-    if (databases.length > 0) {
+    if (databases.isNotEmpty) {
       children = [
-        Text(
+        const Text(
           'Databases',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -233,7 +233,7 @@ class _DatabaseButtons extends StatelessWidget with GetItMixin {
         const SizedBox(height: 20),
         GridView.count(
           shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           crossAxisCount: _crossAxisCount,
           crossAxisSpacing: _crossAxisSpacing,
           mainAxisSpacing: _mainAxisSpacing,
@@ -250,10 +250,8 @@ class _DatabaseButtons extends StatelessWidget with GetItMixin {
       ];
     }
 
-    return Container(
-      child: Column(
-        children: children,
-      ),
+    return Column(
+      children: children,
     );
   }
 }
@@ -279,7 +277,7 @@ class DirectorySelectView extends StatelessWidget with GetItMixin {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _DatabaseButtons(),
-                Divider(thickness: 2),
+                const Divider(thickness: 2),
                 _DirectorySelector(),
               ],
             ),
